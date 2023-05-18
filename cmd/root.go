@@ -21,8 +21,8 @@ import (
 var flags types.Flags
 
 var rootCmd = &cobra.Command{
-	Use:   "journalfmt [-f <format string> | -c <format file>]",
-	Short: "A tool format journalctl json.",
+	Use:   "journalfmt",
+	Short: "A tool format journalctl json stream from stdin.",
 	RunE: func(_ *cobra.Command, args []string) (err error) {
 		return rootCmdRun(flags)
 	},
