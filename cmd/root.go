@@ -188,10 +188,9 @@ var wellKnowFields = map[string]struct{}{
 	"_UDEV_DEVNODE":     {},
 	"_UDEV_DEVLINK":     {},
 
-	"COREDUMP_UNIT":      {},
-	"COREDUMP_USER_UNIT": {},
-	"OBJECT_PID":         {},
-
+	"COREDUMP_UNIT":            {},
+	"COREDUMP_USER_UNIT":       {},
+	"OBJECT_PID":               {},
 	"OBJECT_UID":               {},
 	"OBJECT_GID":               {},
 	"OBJECT_COMM":              {},
