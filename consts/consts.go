@@ -14,7 +14,13 @@ var (
 		`{{else if eq .PRIORITY "7"}}` + "\033[1;90mDEBUG    \033[0m" +
 		"{{end}}" +
 
-		`{{if ne .SYSLOG_IDENTIFIER nil}}{{printf "%-8s " .SYSLOG_IDENTIFIER}}{{end}}` +
+		`{{if ne .SYSLOG_IDENTIFIER nil}}` +
+		("" +
+			`{{printf "%-8s " .SYSLOG_IDENTIFIER}}`) +
+		`{{else}}` +
+		("" +
+			`{{printf "%-8s " ._COMM}}`) +
+		`{{end}}` +
 		`{{if ne ._PID nil}}{{$pid := printf "[%s]" ._PID}}{{printf "%-6s" $pid}}{{end}}` +
 		"\n" +
 
