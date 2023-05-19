@@ -6,7 +6,7 @@ default output option. And when running with `--output json` or `verbose`,
 
 But it has no custom format option.
 
-So I write this little program to get json output from journalctl from stdin,
+So I write this little program to get json output from journalctl via **stdin**,
 and use a golang template to format that json.
 
 By default it print something like this:
