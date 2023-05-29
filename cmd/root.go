@@ -83,7 +83,7 @@ func rootCmdRun(flags types.Flags) (err error) {
 
 			err := printWithMap(tmpl, journalEntryMap)
 			if err != nil {
-				return
+				panic(err)
 			}
 		}
 	}()
