@@ -38,7 +38,7 @@ var (
 		"\n{{end}}" +
 
 		"\t" +
-                `{{$message := print .MESSAGE }}`+
+		`{{$message := print .MESSAGE }}` +
 		`{{if eq .PRIORITY "0"}}` + "\033[1;31m{{indent 1 $message}}\033[0m" +
 		`{{else if eq .PRIORITY "1"}}` + "\033[1;31m{{indent 1 $message}}\033[0m" +
 		`{{else if eq .PRIORITY "2"}}` + "\033[1;31m{{indent 1 $message}}\033[0m" +
