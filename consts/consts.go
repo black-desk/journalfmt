@@ -53,7 +53,8 @@ var (
 		("" +
 			"{{range $k, $v := .extra}}\t{{$k}}=\n" +
 			("" +
-				"\t\t{{indent 2 $v}}\n") +
+				`{{$vstr := print $v }}` +
+				"\t\t{{indent 2 $vstr}}\n") +
 			"{{end}}") +
 		"{{end}}" +
 		"\n"
