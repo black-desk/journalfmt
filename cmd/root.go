@@ -86,6 +86,7 @@ func rootCmdRun(flags types.Flags) (err error) {
 				panic(err)
 			}
 		}
+		os.Exit(0)
 	}()
 
 	<-sigChan
