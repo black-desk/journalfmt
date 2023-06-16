@@ -21,7 +21,11 @@ var (
 		("" +
 			`{{printf "%-8s " ._COMM}}`) +
 		`{{end}}` +
-		`{{if ne ._PID nil}}{{$pid := printf "[%s]" ._PID}}{{printf "%-6s" $pid}}{{end}}` +
+		`{{if ne ._PID nil}}` +
+		("" +
+			`{{$pid := printf "[%s]" ._PID}}` +
+			`{{printf "%-6s" $pid}}`) +
+		`{{end}}` +
 		"\n" +
 
 		`{{if ne .CODE_FILE nil}}` +
@@ -39,21 +43,40 @@ var (
 
 		"\t" +
 		`{{$message := print .MESSAGE }}` +
-		`{{if eq .PRIORITY "0"}}` + "\033[1;31m{{indent 1 $message}}\033[0m" +
-		`{{else if eq .PRIORITY "1"}}` + "\033[1;31m{{indent 1 $message}}\033[0m" +
-		`{{else if eq .PRIORITY "2"}}` + "\033[1;31m{{indent 1 $message}}\033[0m" +
-		`{{else if eq .PRIORITY "3"}}` + "\033[1;31m{{indent 1 $message}}\033[0m" +
-		`{{else if eq .PRIORITY "4"}}` + "\033[1;33m{{indent 1 $message}}\033[0m" +
-		`{{else if eq .PRIORITY "5"}}` + "\033[1;34m{{indent 1 $message}}\033[0m" +
-		`{{else if eq .PRIORITY "6"}}` + "\033[1;34m{{indent 1 $message}}\033[0m" +
-		`{{else if eq .PRIORITY "7"}}` + "\033[1;90m{{indent 1 $message}}\033[0m" +
-		"{{else}}{{$message}}" +
+		`{{if eq .PRIORITY "0"}}` +
+		("" +
+			"\033[1;31m{{indent 1 $message}}\033[0m") +
+		`{{else if eq .PRIORITY "1"}}` +
+		("" +
+			"\033[1;31m{{indent 1 $message}}\033[0m") +
+		`{{else if eq .PRIORITY "2"}}` +
+		("" +
+			"\033[1;31m{{indent 1 $message}}\033[0m") +
+		`{{else if eq .PRIORITY "3"}}` +
+		("" +
+			"\033[1;31m{{indent 1 $message}}\033[0m") +
+		`{{else if eq .PRIORITY "4"}}` +
+		("" +
+			"\033[1;33m{{indent 1 $message}}\033[0m") +
+		`{{else if eq .PRIORITY "5"}}` +
+		("" +
+			"\033[1;34m{{indent 1 $message}}\033[0m") +
+		`{{else if eq .PRIORITY "6"}}` +
+		("" +
+			"\033[1;34m{{indent 1 $message}}\033[0m") +
+		`{{else if eq .PRIORITY "7"}}` +
+		("" +
+			"\033[1;90m{{indent 1 $message}}\033[0m") +
+		"{{else}}" +
+		("" +
+			"{{$message}}") +
 		"{{end}}\n" +
 		"{{if ne .extra nil}}" +
 		("" +
-			"{{range $k, $v := .extra}}\t{{$k}}=\n" +
+			"{{range $k, $v := .extra}}" +
 			("" +
 				"{{$vStr := print $v}}" +
+				"\t{{$k}}=\n" +
 				"\t\t{{indent 2 $vStr}}\n") +
 			"{{end}}") +
 		"{{end}}" +
