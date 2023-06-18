@@ -38,7 +38,7 @@ src/core/job.c:768 (job_emit_done_message)
 ## Customization
 
 Check golang text/template documentations first. Then go to check the [default
-format](./consts/consts.go)
+format](./consts/consts.go). As well as --help.
 
 Here are something you should know:
 
