@@ -37,8 +37,9 @@ src/core/job.c:768 (job_emit_done_message)
 
 ## Customization
 
-Check golang text/template documentations first. Then go to check the [default
-format](./consts/consts.go). As well as --help.
+Check golang text/template documentations first.
+Then go to check the [default format](./consts/consts.go),
+[oneline config](./examples/oneline) as well as `journalfmt --help`.
 
 Here are something you should know:
 
