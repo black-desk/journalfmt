@@ -2,20 +2,24 @@ package cmd
 
 import (
 	"encoding/json"
+	"errors"
 	"io"
 	"log"
 	"log/syslog"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
 	"text/template"
 	"time"
 
+	"github.com/adrg/xdg"
+	"github.com/spf13/cobra"
+
 	"github.com/black-desk/journalfmt/consts"
 	"github.com/black-desk/journalfmt/types"
-	"github.com/spf13/cobra"
 )
 
 var flags types.Flags
@@ -41,33 +45,18 @@ func rootCmdRun(flags types.Flags) (err error) {
 				return
 			},
 		})
-	{
-		templateStr := flags.Fmt
 
-		if flags.FmtFile != "" {
-			var file *os.File
-			file, err = os.Open(flags.FmtFile)
-			defer file.Close()
-			if err != nil {
-				return
-			}
-			var bs []byte
-			bs, err = io.ReadAll(file)
-			if err != nil {
-				return
-			}
+	var templateStr string
+	templateStr, err = loadFmtFile(flags.FmtFile)
+	if errors.Is(err, os.ErrNotExist) {
+		templateStr = consts.DefaultFormat
+	} else if err != nil {
+		return
+	}
 
-			if len(bs) > 1 && bs[len(bs)-1] == '\n' {
-				bs = bs[:len(bs)-1]
-			}
-
-			templateStr = string(bs)
-		}
-
-		tmpl, err = tmpl.Parse(templateStr)
-		if err != nil {
-			return
-		}
+	tmpl, err = tmpl.Parse(templateStr)
+	if err != nil {
+		return
 	}
 
 	go func() {
@@ -91,6 +80,37 @@ func rootCmdRun(flags types.Flags) (err error) {
 
 	<-sigChan
 
+	return
+}
+
+func loadFmtFile(path string) (ret string, err error) {
+	if !filepath.IsAbs(path) {
+		path, err = xdg.SearchConfigFile(
+			filepath.Join("journalfmt", path),
+		)
+		if err != nil {
+			err = os.ErrNotExist
+			return
+		}
+	}
+	var file *os.File
+	file, err = os.Open(path)
+	defer file.Close()
+	if err != nil {
+		return
+	}
+
+	var bs []byte
+	bs, err = io.ReadAll(file)
+	if err != nil {
+		return
+	}
+
+	if len(bs) > 1 && bs[len(bs)-1] == '\n' {
+		bs = bs[:len(bs)-1]
+	}
+
+	ret = string(bs)
 	return
 }
 
@@ -227,13 +247,15 @@ func Execute() {
 
 func init() {
 	rootCmd.Flags().StringVarP(
-		&flags.Fmt,
-		"format", "f",
-		consts.DefaultFormat,
-		"Format string of journal logs.")
-	rootCmd.Flags().StringVarP(
 		&flags.FmtFile,
 		"format-file", "c",
-		"",
-		"Format string of journal logs store in a file, last \\n ignored.")
+		"default",
+		""+
+			"Format string of journal logs store in a file, "+
+			"last \\n ignored. "+
+			"If path is relative, it will be searched in "+
+			"`${XDG_CONFIG_HOME}/journalfmt/`.\n"+
+			"If that file not existed, "+
+			"fallback to the builtin format.",
+	)
 }
